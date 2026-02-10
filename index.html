@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BodhiCards - Tibetan Learning</title>
+    <title>BodhiCards</title>
     
     <script src="https://cdn.jsdelivr.net/npm/open-wylie@1.0.1/dist/wylie.min.js"></script>
     
@@ -15,7 +15,7 @@
     <div class="glass-panel admin-section">
         <h3>Developer Tools</h3>
         <input type="text" id="wylie-input" placeholder="Type Wylie (e.g., stag, mig)..." onkeyup="convertWylie()">
-        <input type="text" id="new-tib" placeholder="Tibetan Script" readonly>
+        <input type="text" id="new-tib" placeholder="Tibetan Script will appear here" readonly>
         <input type="text" id="new-eng" placeholder="English Meaning">
         
         <select id="new-cat">
@@ -37,9 +37,9 @@
         <button onclick="addNewWord()" class="btn-save-all">💾 Save Entry</button>
 
         <hr style="border: 0.5px solid rgba(255,255,255,0.1); margin: 20px 0;">
-        <div class="transfer-box">
-            <button onclick="exportData()" style="background: #6c5ce7; width: 45%; color: white;">📥 Backup</button>
-            <label for="import-file" style="background: #a29bfe; padding: 10px; border-radius: 10px; cursor: pointer; display: inline-block; width: 40%; font-weight: bold; font-size: 12px; color: white;">📤 Load</label>
+        <div class="transfer-box" style="display: flex; justify-content: space-around;">
+            <button onclick="exportData()" style="background: #6c5ce7; color: white; width: 45%;">📥 Backup</button>
+            <label for="import-file" style="background: #a29bfe; color: white; padding: 12px; border-radius: 10px; cursor: pointer; width: 40%; font-weight: bold; font-size: 12px; text-align: center;">📤 Load</label>
             <input type="file" id="import-file" style="display:none" onchange="importData(event)">
         </div>
     </div>
@@ -59,7 +59,7 @@
         <p id="english-word">...</p>
         <span id="display-cat" class="tag"></span>
         
-        <div class="button-group">
+        <div class="button-group" style="display: flex; justify-content: center; gap: 10px;">
             <button onclick="playVoice()" class="btn-play">🔊 Play</button>
             <button onclick="nextWord()" class="btn-next">Next ➡️</button>
         </div>
@@ -67,6 +67,6 @@
     </div>
 </div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
