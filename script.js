@@ -1,7 +1,6 @@
-// 1. DATA SETUP
-// We use a unique key 'bodhiCards_v2' to avoid conflicts with old, broken data
-let words = JSON.parse(localStorage.getItem('bodhiCards_v2')) || [
-    { tib: "བཀྲ་ཤིས་བདེ་ལེགས།", eng: "Hello", category: "General", img: "", audio: null }
+// 1. DATA STORAGE
+let words = JSON.parse(localStorage.getItem('bodhiCards_v3')) || [
+    { tib: "བཀྲ་ཤིས་བདེ་ལེགས།", eng: "Hello", category: "Basic", img: "", audio: null }
 ];
 let filteredWords = [...words];
 let currentIndex = 0;
@@ -9,26 +8,17 @@ let mediaRecorder;
 let audioChunks = [];
 let tempAudioData = null;
 
-// 2. PROFESSIONAL WYLIE TRANSCODER
-// This function now uses the 'Wylie' library we linked in the HTML head
+// 2. WYLIE TRANSCODER
 function convertWylie() {
     let input = document.getElementById('wylie-input').value;
-    
-    // The library handles the complex vertical stacking (stag) and vowels (mig)
-    // It is a professional-grade "Transcoder" signal processor.
     try {
         if (typeof Wylie !== 'undefined') {
-            let result = Wylie.reformatWylie(input);
-            document.getElementById('new-tib').value = result;
-        } else {
-            console.error("Wylie library not loaded yet.");
+            document.getElementById('new-tib').value = Wylie.reformatWylie(input);
         }
-    } catch (err) {
-        console.log("Waiting for full Wylie input...");
-    }
+    } catch (err) { console.log("Processing stack..."); }
 }
 
-// 3. UI UPDATE (The "Screen" Driver)
+// 3. UI ENGINE
 function updateUI() {
     if (filteredWords.length === 0) {
         document.getElementById('tibetan-word').innerText = "Empty";
@@ -42,37 +32,31 @@ function updateUI() {
     document.getElementById('display-cat').innerText = current.category;
     
     const imgEl = document.getElementById('display-img');
-    if (current.img) {
-        imgEl.src = current.img;
-        imgEl.style.display = "inline-block";
-    } else {
-        imgEl.style.display = "none";
-    }
-    // Save to Local Memory
-    localStorage.setItem('bodhiCards_v2', JSON.stringify(words));
+    imgEl.src = current.img || "";
+    imgEl.style.display = current.img ? "inline-block" : "none";
+    
+    localStorage.setItem('bodhiCards_v3', JSON.stringify(words));
 }
 
-// 4. VOICE RECORDING (Analog-to-Digital)
+// 4. AUDIO
 async function startRecording() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-            const reader = new FileReader();
-            reader.readAsDataURL(audioBlob);
-            reader.onloadend = () => {
-                tempAudioData = reader.result; // Audio stored as a Base64 signal
-                document.getElementById('record-status').innerText = "✅ Captured!";
-            };
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const reader = new FileReader();
+        reader.readAsDataURL(audioBlob);
+        reader.onloadend = () => {
+            tempAudioData = reader.result;
+            document.getElementById('record-status').innerText = "✅ Captured!";
         };
-        mediaRecorder.start();
-        document.getElementById('record-btn').style.display = 'none';
-        document.getElementById('stop-btn').style.display = 'inline-block';
-        document.getElementById('record-status').innerText = "🔴 Recording...";
-    } catch (err) { alert("Mic access denied!"); }
+    };
+    mediaRecorder.start();
+    document.getElementById('record-btn').style.display = 'none';
+    document.getElementById('stop-btn').style.display = 'inline-block';
+    document.getElementById('record-status').innerText = "🔴 Recording...";
 }
 
 function stopRecording() {
@@ -81,7 +65,7 @@ function stopRecording() {
     document.getElementById('stop-btn').style.display = 'none';
 }
 
-// 5. APP LOGIC (Filter, Save, Delete)
+// 5. APP ACTIONS
 function addNewWord() {
     const tib = document.getElementById('new-tib').value;
     const eng = document.getElementById('new-eng').value;
@@ -91,33 +75,17 @@ function addNewWord() {
     if (tib && eng && tempAudioData) {
         words.push({ tib, eng, category: cat, img, audio: tempAudioData });
         tempAudioData = null;
-        // Reset Inputs
         document.getElementById('wylie-input').value = '';
-        document.getElementById('new-tib').value = '';
-        document.getElementById('new-eng').value = '';
-        document.getElementById('new-img').value = '';
         document.getElementById('record-status').innerText = "Voice: Not Sampled";
-        
         filterCategory('All');
-        alert("Entry Saved Successfully!");
-    } else { 
-        alert("Missing Data: You need Tibetan text, English meaning, and a Voice Recording."); 
-    }
+        alert("Saved to " + cat + "!");
+    } else { alert("Record voice first!"); }
 }
 
 function filterCategory(cat) {
-    if (cat === 'All') filteredWords = [...words];
-    else filteredWords = words.filter(w => w.category === cat);
+    filteredWords = (cat === 'All') ? [...words] : words.filter(w => w.category === cat);
     currentIndex = 0;
     updateUI();
-}
-
-function deleteCurrentWord() {
-    if (words.length > 1) {
-        const wordToDelete = filteredWords[currentIndex];
-        words = words.filter(w => w !== wordToDelete);
-        filterCategory('All');
-    }
 }
 
 function nextWord() {
@@ -128,9 +96,26 @@ function nextWord() {
 }
 
 function playVoice() {
-    const audio = filteredWords[currentIndex].audio;
-    if (audio) new Audio(audio).play();
+    if (filteredWords[currentIndex].audio) new Audio(filteredWords[currentIndex].audio).play();
 }
 
-// INITIAL START
+// 6. DATA BRIDGE
+function exportData() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(words));
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute("href", dataStr);
+    dlAnchor.setAttribute("download", "bodhi_backup.json");
+    dlAnchor.click();
+}
+
+function importData(event) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        words = JSON.parse(e.target.result);
+        filterCategory('All');
+        alert("Backup Loaded!");
+    };
+    reader.readAsText(event.target.files[0]);
+}
+
 updateUI();

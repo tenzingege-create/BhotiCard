@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BodhiCards - Tibetan Learning Sandbox</title>
+    <title>BodhiCards - Tibetan Learning</title>
     
     <script src="https://cdn.jsdelivr.net/npm/open-wylie@1.0.1/dist/wylie.min.js"></script>
     
@@ -14,42 +14,48 @@
 <div class="container">
     <div class="glass-panel admin-section">
         <h3>Developer Tools</h3>
-        <input type="text" id="wylie-input" placeholder="Type Wylie (e.g., stag, mig)..." onkeyup="convertWylie()">
-        <input type="text" id="new-tib" placeholder="Tibetan Script (Auto-filled)" readonly>
+        <input type="text" id="wylie-input" placeholder="Type Wylie (e.g., stag, ja)..." onkeyup="convertWylie()">
+        <input type="text" id="new-tib" placeholder="Tibetan Script" readonly>
         <input type="text" id="new-eng" placeholder="English Meaning">
         
         <select id="new-cat">
+            <option value="Basic">💬 Basic Phrases</option>
             <option value="General">📁 General</option>
             <option value="Food">🍎 Food</option>
             <option value="Animals">🦁 Animals</option>
             <option value="Vegetables">🥦 Vegetables</option>
-            <option value="Family">👨‍👩‍👦 Family</option>
-            <option value="Fruits">🍓 Fruits</option>
         </select>
         
-        <input type="text" id="new-img" placeholder="Paste Image URL (Optional)">
+        <input type="text" id="new-img" placeholder="Paste Image URL">
 
         <div class="record-box">
             <p id="record-status">Voice: Not Sampled</p>
-            <button id="record-btn" onclick="startRecording()" class="btn-record">⏺ Record Pronunciation</button>
-            <button id="stop-btn" onclick="stopRecording()" class="btn-stop" style="display:none;">⏹ Stop & Capture</button>
+            <button id="record-btn" onclick="startRecording()" class="btn-record">⏺ Record</button>
+            <button id="stop-btn" onclick="stopRecording()" class="btn-stop" style="display:none;">⏹ Stop</button>
         </div>
 
-        <button onclick="addNewWord()" class="btn-save-all">💾 Save Entry to Memory</button>
+        <button onclick="addNewWord()" class="btn-save-all">💾 Save Entry</button>
+
+        <hr style="border: 0.5px solid rgba(255,255,255,0.1); margin: 20px 0;">
+        <div class="transfer-box">
+            <button onclick="exportData()" style="background: #6c5ce7; width: 45%;">📥 Backup</button>
+            <label for="import-file" style="background: #a29bfe; padding: 10px; border-radius: 10px; cursor: pointer; display: inline-block; width: 40%; font-weight: bold; font-size: 12px;">📤 Load</label>
+            <input type="file" id="import-file" style="display:none" onchange="importData(event)">
+        </div>
     </div>
 
     <div class="filter-section">
         <button onclick="filterCategory('All')">🌟 All</button>
+        <button onclick="filterCategory('Basic')">💬 Basic</button>
         <button onclick="filterCategory('Food')">🍎 Food</button>
         <button onclick="filterCategory('Animals')">🦁 Animals</button>
-        <button onclick="filterCategory('Vegetables')">🥦 Veggies</button>
     </div>
 
     <div class="glass-panel flashcard">
         <div id="image-frame">
             <img id="display-img" src="" style="width:120px; height:120px; border-radius:15px; display:none; object-fit: cover; margin-bottom: 10px;">
         </div>
-        <h1 id="tibetan-word">བཀྲ་ཤིས་བདེ་ལེགས།</h1>
+        <h1 id="tibetan-word">Welcome</h1>
         <p id="english-word">Hello</p>
         <span id="display-cat" class="tag">GENERAL</span>
         
@@ -57,7 +63,7 @@
             <button onclick="playVoice()" class="btn-play">🔊 Play</button>
             <button onclick="nextWord()" class="btn-next">Next ➡️</button>
         </div>
-        <button onclick="deleteCurrentWord()" class="btn-delete">🗑 Delete This Entry</button>
+        <button onclick="deleteCurrentWord()" class="btn-delete">🗑 Delete Entry</button>
     </div>
 </div>
 
