@@ -9,9 +9,7 @@ body {
     font-family: 'Segoe UI', sans-serif;
     color: white;
 }
-
 .container { width: 95%; max-width: 500px; padding: 20px; }
-
 .glass-panel {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(15px);
@@ -22,41 +20,20 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     text-align: center;
 }
-
-input, select {
-    width: 90%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 10px;
-    border: none;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-}
-
-button {
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
+input, select { width: 90%; padding: 10px; margin: 8px 0; border-radius: 10px; border: none; background: rgba(255, 255, 255, 0.2); color: white; }
+button { padding: 12px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
 .btn-save-all { background: #00d2ff; color: white; width: 95%; margin-top: 10px; }
 .btn-record { background: #ff4757; color: white; }
 .btn-stop { background: #2f3542; color: white; animation: pulse 1s infinite; }
 .btn-play { background: #2ed573; color: white; width: 100px; }
 .btn-next { background: #ffa502; color: white; width: 100px; }
-
 .filter-section { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
 .filter-section button { border-radius: 50px; padding: 10px 15px; color: white; box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
 .filter-section button:nth-child(1) { background: #58cc02; } 
 .filter-section button:nth-child(2) { background: #af47ff; } 
 .filter-section button:nth-child(3) { background: #ff4b4b; } 
 .filter-section button:nth-child(4) { background: #1cb0f6; } 
-
 .btn-delete { background: none; color: #ff4757; border: 1px solid #ff4757; font-size: 0.7rem; margin-top: 15px; }
-
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 h1 { font-size: 2.8rem; margin: 10px 0; }
 .tag { font-size: 0.7rem; color: #00d2ff; display: block; margin-bottom: 10px; }
