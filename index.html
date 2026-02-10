@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BodhiCards - Tibetan Learning Sandbox</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="glass-panel admin-section">
+        <h3>Developer Tools</h3>
+        <input type="text" id="wylie-input" placeholder="Type Wylie (e.g., ka kha)..." onkeyup="convertWylie()">
+        <input type="text" id="new-tib" placeholder="Tibetan Script (Auto-filled)">
+        <input type="text" id="new-eng" placeholder="English Meaning">
+        
+        <select id="new-cat">
+            <option value="General">📁 General</option>
+            <option value="Food">🍎 Food</option>
+            <option value="Animals">🦁 Animals</option>
+            <option value="Vegetables">🥦 Vegetables</option>
+        </select>
+        
+        <input type="text" id="new-img" placeholder="Paste Image URL (Optional)">
+
+        <div class="record-box">
+            <p id="record-status">Voice: Not Sampled</p>
+            <button id="record-btn" onclick="startRecording()" class="btn-record">⏺ Record Pronunciation</button>
+            <button id="stop-btn" onclick="stopRecording()" class="btn-stop" style="display:none;">⏹ Stop & Capture</button>
+        </div>
+
+        <button onclick="addNewWord()" class="btn-save-all">💾 Save to Local Memory</button>
+    </div>
+
+    <div class="filter-section">
+        <button onclick="filterCategory('All')">All</button>
+        <button onclick="filterCategory('Food')">Food</button>
+        <button onclick="filterCategory('Animals')">Animals</button>
+    </div>
+
+    <div class="glass-panel flashcard">
+        <div id="image-frame">
+            <img id="display-img" src="" style="width:120px; height:120px; border-radius:15px; display:none; object-fit: cover;">
+        </div>
+        <h1 id="tibetan-word">Welcome</h1>
+        <p id="english-word">Start by adding a word!</p>
+        <span id="display-cat" class="tag"></span>
+        
+        <div class="button-group">
+            <button onclick="playVoice()" class="btn-play">🔊 Play Voice</button>
+            <button onclick="nextWord()" class="btn-next">Next Word ➡️</button>
+        </div>
+        <button onclick="deleteCurrentWord()" class="btn-delete">🗑 Delete Entry</button>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

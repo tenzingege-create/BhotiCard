@@ -1,0 +1,94 @@
+body {
+    background: linear-gradient(135deg, #1e3c72, #2a5298, #000000);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+.container { width: 95%; max-width: 500px; padding: 20px; }
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    text-align: center;
+}
+
+input, select {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    outline: none;
+}
+
+.record-box {
+    background: rgba(0,0,0,0.3);
+    padding: 10px;
+    border-radius: 15px;
+    margin: 10px 0;
+}
+
+button {
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 5px;
+    transition: 0.3s;
+}
+
+.btn-save-all { background: #00d2ff; color: white; width: 95%; }
+.btn-record { background: #ff4757; color: white; }
+.btn-stop { background: #2f3542; color: white; animation: pulse 1s infinite; }
+.btn-play { background: #2ed573; color: white; width: 100px; }
+.btn-next { background: #ffa502; color: white; }
+.btn-delete { background: none; color: #ff4757; border: 1px solid #ff4757; font-size: 0.7rem; margin-top: 15px; }
+.filter-section {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.filter-section button {
+    padding: 12px 24px;
+    border-radius: 50px; /* Makes them rounded like Duolingo */
+    border: none;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2); /* Adds a 3D "pressable" look */
+    transition: transform 0.1s;
+}
+
+/* Duolingo-style Palette */
+.filter-section button:nth-child(1) { background: #58cc02; } /* Green for 'All' */
+.filter-section button:nth-child(2) { background: #ff4b4b; } /* Red for 'Food' */
+.filter-section button:nth-child(3) { background: #1cb0f6; } /* Blue for 'Animals' */
+
+.filter-section button:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.filter-section button { background: rgba(255,255,255,0.1); color: white; font-size: 0.8rem; }
+
+.tag { display: block; font-size: 0.7rem; color: #00d2ff; margin-bottom: 10px; text-transform: uppercase; }
+
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+h1 { font-size: 2.5rem; margin: 10px 0; }
