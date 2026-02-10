@@ -1,5 +1,6 @@
 // 1. DATA SETUP
-let words = JSON.parse(localStorage.getItem('bodhiCardsData')) || [
+// We use a unique key 'bodhiCards_v2' to avoid conflicts with old, broken data
+let words = JSON.parse(localStorage.getItem('bodhiCards_v2')) || [
     { tib: "བཀྲ་ཤིས་བདེ་ལེགས།", eng: "Hello", category: "General", img: "", audio: null }
 ];
 let filteredWords = [...words];
@@ -8,33 +9,30 @@ let mediaRecorder;
 let audioChunks = [];
 let tempAudioData = null;
 
-// 2. WYLIE TRANSCODER
-const wylieMap = {
-    'ka': 'ཀ', 'kha': 'ཁ', 'ga': 'ག', 'nga': 'ང',
-    'ca': 'ཅ', 'cha': 'ཆ', 'ja': 'ཇ', 'nya': 'ཉ',
-    'ta': 'ཏ', 'tha': 'ཐ', 'da': 'ད', 'na': 'ན',
-    'pa': 'པ', 'pha': 'ཕ', 'ba': 'བ', 'ma': 'མ',
-    'tsa': 'ཙ', 'tsha': 'ཚ', 'dza': 'ཛ', 'wa': 'ཝ',
-    'zha': 'ཞ', 'za': 'ཟ', "'a": 'འ', 'ya': 'ཡ',
-    'ra': 'ར', 'la': 'ལ', 'sha': 'ཤ', 'sa': 'ས', 'ha': 'ཧ', 'a': 'ཨ'
-};
-
+// 2. PROFESSIONAL WYLIE TRANSCODER
+// This function now uses the 'Wylie' library we linked in the HTML head
 function convertWylie() {
-    let input = document.getElementById('wylie-input').value.toLowerCase();
-    let result = "";
-    let syllables = input.split(' ');
-    syllables.forEach(s => {
-        if (wylieMap[s]) result += wylieMap[s] + "་";
-        else if (s.length > 0) result += s;
-    });
-    document.getElementById('new-tib').value = result;
+    let input = document.getElementById('wylie-input').value;
+    
+    // The library handles the complex vertical stacking (stag) and vowels (mig)
+    // It is a professional-grade "Transcoder" signal processor.
+    try {
+        if (typeof Wylie !== 'undefined') {
+            let result = Wylie.reformatWylie(input);
+            document.getElementById('new-tib').value = result;
+        } else {
+            console.error("Wylie library not loaded yet.");
+        }
+    } catch (err) {
+        console.log("Waiting for full Wylie input...");
+    }
 }
 
-// 3. UI UPDATE
+// 3. UI UPDATE (The "Screen" Driver)
 function updateUI() {
     if (filteredWords.length === 0) {
         document.getElementById('tibetan-word').innerText = "Empty";
-        document.getElementById('english-word').innerText = "No words in this category";
+        document.getElementById('english-word').innerText = "No words here";
         document.getElementById('display-img').style.display = "none";
         return;
     }
@@ -50,10 +48,11 @@ function updateUI() {
     } else {
         imgEl.style.display = "none";
     }
-    localStorage.setItem('bodhiCardsData', JSON.stringify(words));
+    // Save to Local Memory
+    localStorage.setItem('bodhiCards_v2', JSON.stringify(words));
 }
 
-// 4. RECORDING LOGIC
+// 4. VOICE RECORDING (Analog-to-Digital)
 async function startRecording() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -65,7 +64,7 @@ async function startRecording() {
             const reader = new FileReader();
             reader.readAsDataURL(audioBlob);
             reader.onloadend = () => {
-                tempAudioData = reader.result;
+                tempAudioData = reader.result; // Audio stored as a Base64 signal
                 document.getElementById('record-status').innerText = "✅ Captured!";
             };
         };
@@ -82,7 +81,7 @@ function stopRecording() {
     document.getElementById('stop-btn').style.display = 'none';
 }
 
-// 5. CRUD OPERATIONS
+// 5. APP LOGIC (Filter, Save, Delete)
 function addNewWord() {
     const tib = document.getElementById('new-tib').value;
     const eng = document.getElementById('new-eng').value;
@@ -92,14 +91,18 @@ function addNewWord() {
     if (tib && eng && tempAudioData) {
         words.push({ tib, eng, category: cat, img, audio: tempAudioData });
         tempAudioData = null;
+        // Reset Inputs
         document.getElementById('wylie-input').value = '';
         document.getElementById('new-tib').value = '';
         document.getElementById('new-eng').value = '';
         document.getElementById('new-img').value = '';
         document.getElementById('record-status').innerText = "Voice: Not Sampled";
+        
         filterCategory('All');
-        alert("Saved!");
-    } else { alert("Please fill text and record voice!"); }
+        alert("Entry Saved Successfully!");
+    } else { 
+        alert("Missing Data: You need Tibetan text, English meaning, and a Voice Recording."); 
+    }
 }
 
 function filterCategory(cat) {
@@ -129,4 +132,5 @@ function playVoice() {
     if (audio) new Audio(audio).play();
 }
 
+// INITIAL START
 updateUI();
