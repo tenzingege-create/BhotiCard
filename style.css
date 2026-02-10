@@ -48,13 +48,12 @@ button {
 .btn-play { background: #2ed573; color: white; width: 100px; }
 .btn-next { background: #ffa502; color: white; width: 100px; }
 
-/* BUBBLE BUTTONS */
-.filter-section { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+.filter-section { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
 .filter-section button { border-radius: 50px; padding: 10px 15px; color: white; box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
-.filter-section button:nth-child(1) { background: #58cc02; } /* All - Green */
-.filter-section button:nth-child(2) { background: #af47ff; } /* Basic - Purple */
-.filter-section button:nth-child(3) { background: #ff4b4b; } /* Food - Red */
-.filter-section button:nth-child(4) { background: #1cb0f6; } /* Animals - Blue */
+.filter-section button:nth-child(1) { background: #58cc02; } 
+.filter-section button:nth-child(2) { background: #af47ff; } 
+.filter-section button:nth-child(3) { background: #ff4b4b; } 
+.filter-section button:nth-child(4) { background: #1cb0f6; } 
 
 .btn-delete { background: none; color: #ff4757; border: 1px solid #ff4757; font-size: 0.7rem; margin-top: 15px; }
 
