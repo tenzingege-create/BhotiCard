@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BodhiCards - Tibetan Learning</title>
+    <title>BodhiCards - Offline Version</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
 <div class="container">
     <div class="glass-panel admin-section">
         <h3>Developer Tools</h3>
-        <input type="text" id="wylie-input" placeholder="Type Wylie (e.g., stag, mig)..." onkeyup="convertWylie()">
+        <input type="text" id="wylie-input" placeholder="Type Wylie (stag, mig, ka)..." onkeyup="convertWylie()">
         <input type="text" id="new-tib" placeholder="Tibetan Script" readonly>
         <input type="text" id="new-eng" placeholder="English Meaning">
         
@@ -20,7 +20,6 @@
             <option value="General">📁 General</option>
             <option value="Food">🍎 Food</option>
             <option value="Animals">🦁 Animals</option>
-            <option value="Vegetables">🥦 Vegetables</option>
         </select>
         
         <input type="text" id="new-img" placeholder="Paste Image URL">

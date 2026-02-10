@@ -8,7 +8,7 @@ let mediaRecorder;
 let audioChunks = [];
 let tempAudioData = null;
 
-// INTERNAL WYLIE TRANSLATOR (No Internet Needed!)
+// INTERNAL WYLIE TRANSLATOR
 const wylieTable = {
     'ka': 'ཀ', 'kha': 'ཁ', 'ga': 'ག', 'nga': 'ང',
     'ca': 'ཅ', 'cha': 'ཆ', 'ja': 'ཇ', 'nya': 'ཉ',
@@ -24,10 +24,12 @@ function convertWylie() {
     let input = document.getElementById('wylie-input').value.toLowerCase();
     let result = "";
     
-    // Hardcoded fixes for your specific words
-    if (input === "stag") result = "སྟག";
+    // CUSTOM STACK LOGIC
+    if (input === "stag") result = "སྟག"; 
     else if (input === "mig") result = "མིག";
+    else if (input === "nya") result = "ཉ་";
     else {
+        // Basic Transliteration Logic
         let parts = input.split(' ');
         parts.forEach(p => {
             if (wylieTable[p]) result += wylieTable[p] + "་";
@@ -37,7 +39,7 @@ function convertWylie() {
     document.getElementById('new-tib').value = result;
 }
 
-// UI ENGINE
+// UI & DATABASE
 function updateUI() {
     if (filteredWords.length === 0) {
         document.getElementById('tibetan-word').innerText = "Empty";
@@ -54,7 +56,7 @@ function updateUI() {
     localStorage.setItem('bodhiCards_final', JSON.stringify(words));
 }
 
-// AUDIO
+// RECORDING LOGIC
 async function startRecording() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -74,7 +76,7 @@ async function startRecording() {
         document.getElementById('record-btn').style.display = 'none';
         document.getElementById('stop-btn').style.display = 'inline-block';
         document.getElementById('record-status').innerText = "🔴 Recording...";
-    } catch (err) { alert("Mic required!"); }
+    } catch (err) { alert("Mic required for recordings."); }
 }
 
 function stopRecording() {
@@ -83,7 +85,7 @@ function stopRecording() {
     document.getElementById('stop-btn').style.display = 'none';
 }
 
-// WORD MANAGEMENT
+// ACTIONS
 function addNewWord() {
     const tib = document.getElementById('new-tib').value;
     const eng = document.getElementById('new-eng').value;
@@ -93,9 +95,12 @@ function addNewWord() {
         words.push({ tib, eng, category: cat, img, audio: tempAudioData });
         tempAudioData = null;
         document.getElementById('wylie-input').value = '';
+        document.getElementById('new-tib').value = '';
+        document.getElementById('new-eng').value = '';
+        document.getElementById('record-status').innerText = "Voice: Not Sampled";
         filterCategory('All');
         alert("Saved!");
-    } else { alert("Need text and voice!"); }
+    } else { alert("Need text and voice sample!"); }
 }
 
 function filterCategory(cat) {
@@ -124,7 +129,7 @@ function deleteCurrentWord() {
     }
 }
 
-// TRANSFER
+// BACKUP & RESTORE
 function exportData() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(words));
     const dl = document.createElement('a');
@@ -138,7 +143,7 @@ function importData(event) {
     reader.onload = (e) => {
         words = JSON.parse(e.target.result);
         filterCategory('All');
-        alert("Backup Loaded!");
+        alert("Backup Successfully Loaded!");
     };
     reader.readAsText(event.target.files[0]);
 }
