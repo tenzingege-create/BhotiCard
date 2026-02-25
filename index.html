@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BodhiCards - Offline Version</title>
+    <title>BodhiCards - Dual Input Version</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,8 +11,14 @@
 <div class="container">
     <div class="glass-panel admin-section">
         <h3>Developer Tools</h3>
-        <input type="text" id="wylie-input" placeholder="Type Wylie (stag, mig, ka)..." onkeyup="convertWylie()">
-        <input type="text" id="new-tib" placeholder="Tibetan Script" readonly>
+        
+        <div class="input-toggle-group" style="margin-bottom: 10px;">
+            <button onclick="setInputMode('wylie')" id="mode-wylie" style="background: #6c5ce7; font-size: 0.7rem;">Wylie Mode</button>
+            <button onclick="setInputMode('native')" id="mode-native" style="background: rgba(255,255,255,0.1); font-size: 0.7rem;">Native Mode</button>
+        </div>
+
+        <input type="text" id="wylie-input" placeholder="Type here..." onkeyup="handleInput()">
+        <input type="text" id="new-tib" placeholder="Tibetan Script Preview" readonly>
         <input type="text" id="new-eng" placeholder="English Meaning">
         
         <select id="new-cat">
